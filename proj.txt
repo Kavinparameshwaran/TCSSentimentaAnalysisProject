@@ -1,0 +1,124 @@
+from flask import Flask, render_template, request
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+nltk.download('vader_lexicon')
+app = Flask(__name__)
+
+
+@app.route("/", methods=["GET", "POST"])
+def Sentiment():
+    if request.method == "POST":
+        inp = request.form.get("inp")
+        sid = SentimentIntensityAnalyzer()
+        score = sid.polarity_scores(inp)
+        if score["neg"] != 0:
+            return render_template('home.html', message="NotHappy😞😞")
+        else:
+            return render_template('home.html', message='Happy😄😄')
+    return render_template('home.html')
+if __name__ == "__main__":
+    app.run()
+************************************************************************************************************
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Sentiment</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css')}}">
+</head>
+<body>
+<div class="container">
+    <div class="container-lg">
+        <h1>SENTIMENTAL ANALYSIS</h1>
+        <form method="POST" class="form">
+            <input type="text" name="inp" placeholder="Enter Your Feeling">
+            <input type="submit" name="submit" id="btn" class="btn btn-primary btn-block">
+
+        </form>
+        <h1 class="output">{{message}}</h1>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+body{
+  background-color: rgb(3,65,65);
+}
+
+.container-lg{
+  width: 80%
+  height: 550px;
+  color: rgb(19,19,19);
+  background-color: rgb(247,247,247);
+  border-radius: 20px;
+}
+
+.heading{
+  text-align: center;
+  padding-top: 50px;
+  margin-top:50px;
+  font-weight: bold;
+}
+#inp{
+  display:flex;
+  height:80px
+  width: 600px;
+  margin-left: 135px;
+  margin-top: 30px;
+}
+
+#btn{
+  margin-top: 30px;
+  height: 50px;
+  width: 150px;
+}
+
+.form{
+  text-align: center;
+}
+.output{
+  text-align: center;
+  margin-top: 50px;
+  font-size: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
